@@ -107,5 +107,19 @@ public class BookingController {
                     .body(ApiResponse.error("Failed to retrieve booking details: " + e.getMessage()));
         }
     }
-
+    
+    @GetMapping("/allBookings")
+    public ResponseEntity<ApiResponse<List<Bookings>>> allBookings() {
+        logger.info("Fetching all bookings");
+        
+        try {
+            List<Bookings> bookings = bookingService.allBookings();
+            logger.debug("Retrieved {} total bookings", bookings.size());
+            return ResponseEntity.ok(ApiResponse.success(bookings));
+        } catch (Exception e) {
+            logger.error("Failed to fetch all bookings. Error: {}", e.getMessage(), e);
+            return ResponseEntity.badRequest()
+                    .body(ApiResponse.error("Failed to retrieve bookings: " + e.getMessage()));
+        }
+    }
 }
